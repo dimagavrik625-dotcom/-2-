@@ -1,0 +1,33 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Введіть сторону a: ");
+        double a = sc.nextDouble();
+
+        System.out.print("Введіть сторону b: ");
+        double b = sc.nextDouble();
+
+        System.out.print("Введіть сторону c: ");
+        double c = sc.nextDouble();
+
+        if (a + b > c && a + c > b && b + c > a) {
+            System.out.println("Трикутник існує");
+
+            if (a == b && b == c) {
+                System.out.println("Тип: рівносторонній");
+            } else if (a == b || a == c||  b == c) {
+                System.out.println("Тип: рівнобедрений");
+            } else {
+                System.out.println("Тип: різносторонній");
+            }
+
+        } else {
+            System.out.println("Трикутник не існує");
+        }
+
+        sc.close();
+    }
+}
