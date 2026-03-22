@@ -1,0 +1,67 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+
+        // Ввод данных
+        System.out.print("Введи ціле число: ");
+        int intNum = scanner.nextInt();
+
+        System.out.print("Введи число з плаваючою точкою: ");
+        double doubleNum = scanner.nextDouble();
+        scanner.nextLine(); // очистка буфера
+
+        System.out.print("Введи рядок: ");
+        String text = scanner.nextLine();
+
+        System.out.print("Введи логічне значення (true/false): ");
+        boolean bool = scanner.nextBoolean();
+
+        System.out.println("\n--- Висновок у різних форматах ---");
+
+        // 1
+        System.out.println("1) Звичайний висновок:");
+        System.out.println(intNum + " " + doubleNum + " " + text + " " + bool);
+
+        // 2
+        System.out.println("\n2) printf (десятковий формат):");
+        System.out.printf("int: %d, double: %.2f, string: %s, boolean: %b\n", intNum, doubleNum, text, bool);
+
+        // 3
+        System.out.println("\n3) шістнадцятковий формат:");
+        System.out.printf("int HEX: %x\n", intNum);
+
+        // 4
+        System.out.println("\n4) вісімковий формат:");
+        System.out.printf("int OCT: %o\n", intNum);
+
+        // 5
+        System.out.println("\n5) ширина поля:");
+        System.out.printf("int: %10d\n", intNum);
+
+        // 6
+        System.out.println("\n6) вирівнювання по лівому краю:");
+        System.out.printf("int: %-10d|\n", intNum);
+
+        // 7
+        System.out.println("\n7) float с 3 знаками:");
+        System.out.printf("double: %.3f\n", doubleNum);
+
+        // 8
+        System.out.println("\n8) рядок з обмеженням довжини:");
+        System.out.printf("text: %.5s\n", text);
+
+        // 9
+        System.out.println("\n9) format():");
+        String formatted = String.format("int: %d, double: %.1f", intNum, doubleNum);
+        System.out.println(formatted);
+
+        // 10
+        System.out.println("\n10) комбінований висновок:");
+        System.out.printf("|%10d|%-10s|%8.2f|%b|\n", intNum, text, doubleNum, bool);
+
+        scanner.close();
+    }
+}
