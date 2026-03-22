@@ -1,0 +1,29 @@
+import java.util.Scanner;
+
+public class Task1 {
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Введіть a: ");
+        double a = sc.nextDouble();
+
+        System.out.print("Введіть b: ");
+        double b = sc.nextDouble();
+
+        System.out.print("Введіть c: ");
+        double c = sc.nextDouble();
+
+        double x = (Math.pow(a, 2) * c + Math.pow(b, c) * Math.cos(a + b)) / (c + 1);
+
+        double y = Math.sqrt(
+                Math.pow(c, 2) + b -
+                        Math.pow(b, 2) * Math.pow(Math.sin((c + a) / c), 3)
+        );
+
+        System.out.println("x = " + x);
+        System.out.println("y = " + y);
+
+        sc.close();
+    }
+}
