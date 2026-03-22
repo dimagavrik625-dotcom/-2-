@@ -1,0 +1,21 @@
+import java.util.Scanner;
+
+public class Task5 {
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Введіть рядок: ");
+        String str = sc.nextLine();
+
+        String[] badWords = {"погано", "дурень", "лайка"};
+
+        for (String word : badWords) {
+            str = str.replaceAll(word, "***");
+        }
+
+        System.out.println("Результат: " + str);
+
+        sc.close();
+    }
+}
