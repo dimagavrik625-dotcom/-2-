@@ -1,0 +1,84 @@
+import java.util.Scanner;
+
+public class Task9 {
+
+    public static String inputString() {
+        Scanner sc = new Scanner(System.in);
+        String str;
+
+        while (true) {
+            System.out.print("Введіть рядок: ");
+            str = sc.nextLine();
+
+            String[] words = str.split(" ");
+
+            if (words.length < 2) {
+                System.out.println("Мінімум 2 слова!");
+                continue;
+            }
+
+            boolean ok = true;
+
+            for (int i = 0; i < words.length; i++) {
+                if (words[i].length() < 3) {
+                    ok = false;
+                }
+            }
+
+            if (ok) break;
+            else System.out.println("Кожне слово має бути не менше 3 символів!");
+        }
+
+        return str;
+    }
+
+    public static String reverseAll(String str) {
+        String result = "";
+
+        for (int i = str.length() - 1; i >= 0; i--) {
+            result += str.charAt(i);
+        }
+
+        return result;
+    }
+
+    public static String reverseWords(String str) {
+        String[] words = str.split(" ");
+        String result = "";
+
+        for (int i = 0; i < words.length; i++) {
+
+            String w = words[i];
+            String rev = "";
+
+            for (int j = w.length() - 1; j >= 0; j--) {
+                rev += w.charAt(j);
+            }
+
+            result += rev + " ";
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        String text = inputString();
+
+        System.out.println("Оберіть дію:");
+        System.out.println("1 - Перевернути весь рядок");
+        System.out.println("2 - Перевернути кожне слово");
+
+        int choice = sc.nextInt();
+
+        if (choice == 1) {
+            System.out.println("Результат: " + reverseAll(text));
+        } else if (choice == 2) {
+            System.out.println("Результат: " + reverseWords(text));
+        } else {
+            System.out.println("Неправильний вибір");
+        }
+    }
+}
