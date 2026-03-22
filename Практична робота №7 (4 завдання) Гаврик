@@ -1,0 +1,29 @@
+import java.util.Random;
+
+public class Task4 {
+    public static void main(String[] args) {
+
+        int n = 3;
+        int[][] m = new int[n][n];
+        Random rand = new Random();
+
+        System.out.println("Матриця:");
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                m[i][j] = rand.nextInt(10);
+                System.out.print(m[i][j] + " ");
+            }
+            System.out.println();
+        }
+
+        System.out.println("\nМінор (без 1 рядка і 1 стовпця):");
+
+        for (int i = 1; i < n; i++) {
+            for (int j = 1; j < n; j++) {
+                System.out.print(m[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+}
