@@ -1,0 +1,40 @@
+import java.util.Random;
+import java.util.Scanner;
+
+public class Task3 {
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+        Random rand = new Random();
+
+        System.out.print("Введіть розмір масиву: ");
+        int n = sc.nextInt();
+
+        int[] arr = new int[n];
+
+        System.out.println("Масив:");
+        for (int i = 0; i < n; i++) {
+            arr[i] = rand.nextInt(50);
+            System.out.print(arr[i] + " ");
+        }
+
+        System.out.print("\nЩо знайти: ");
+        int find = sc.nextInt();
+
+        System.out.print("На що замінити: ");
+        int replace = sc.nextInt();
+
+        for (int i = 0; i < n; i++) {
+            if (arr[i] == find) {
+                arr[i] = replace;
+            }
+        }
+
+        System.out.println("Новий масив:");
+        for (int x : arr) {
+            System.out.print(x + " ");
+        }
+
+        sc.close();
+    }
+}
