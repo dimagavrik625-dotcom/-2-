@@ -1,0 +1,76 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+
+        // 1. Информация про типы данных
+        System.out.println("=== Информация о примитивных типах ===");
+
+        System.out.println("\nbyte:");
+        System.out.println("Размер: " + Byte.BYTES + " bytes");
+        System.out.println("Мин: " + Byte.MIN_VALUE);
+        System.out.println("Макс: " + Byte.MAX_VALUE);
+
+        System.out.println("\nshort:");
+        System.out.println("Размер: " + Short.BYTES + " bytes");
+        System.out.println("Мин: " + Short.MIN_VALUE);
+        System.out.println("Макс: " + Short.MAX_VALUE);
+
+        System.out.println("\nint:");
+        System.out.println("Размер: " + Integer.BYTES + " bytes");
+        System.out.println("Мин: " + Integer.MIN_VALUE);
+        System.out.println("Макс: " + Integer.MAX_VALUE);
+
+        System.out.println("\nlong:");
+        System.out.println("Размер: " + Long.BYTES + " bytes");
+        System.out.println("Мин: " + Long.MIN_VALUE);
+        System.out.println("Макс: " + Long.MAX_VALUE);
+
+        System.out.println("\nfloat:");
+        System.out.println("Размер: " + Float.BYTES + " bytes");
+        System.out.println("Мин: " + Float.MIN_VALUE);
+        System.out.println("Макс: " + Float.MAX_VALUE);
+
+        System.out.println("\ndouble:");
+        System.out.println("Размер: " + Double.BYTES + " bytes");
+        System.out.println("Мин: " + Double.MIN_VALUE);
+        System.out.println("Макс: " + Double.MAX_VALUE);
+
+        System.out.println("\nchar:");
+        System.out.println("Размер: " + Character.BYTES + " bytes");
+        System.out.println("Мин: " + (int) Character.MIN_VALUE);
+        System.out.println("Макс: " + (int) Character.MAX_VALUE);
+
+        System.out.println("\nboolean:");
+        System.out.println("Размер: JVM dependent");
+        System.out.println("Ценности: true / false");
+
+        // 2. Ввод данных
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("\n=== Input Section ===");
+
+        try {
+            System.out.print("Введите целое число: ");
+            int intValue = Integer.parseInt(scanner.nextLine());
+            System.out.println("Вы ввели int: " + intValue);
+
+            System.out.print("Введите двойной: ");
+            double doubleValue = Double.parseDouble(scanner.nextLine());
+            System.out.println("Вы ввели двойной: " + doubleValue);
+
+            System.out.print("Введите логическое значение (true/false): ");
+            boolean boolValue = Boolean.parseBoolean(scanner.nextLine());
+            System.out.println("Вы ввели логическое значение: " + boolValue);
+
+            System.out.print("Введите символ: ");
+            char charValue = scanner.nextLine().charAt(0);
+            System.out.println("Вы ввели символ: " + charValue);
+
+        } catch (Exception e) {
+            System.out.println("Ошибка: неправильный формат ввода. ");
+        }
+
+        scanner.close();
+    }
+}
