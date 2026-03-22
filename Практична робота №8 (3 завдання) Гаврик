@@ -1,0 +1,26 @@
+import java.util.Scanner;
+
+public class Task3 {
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Введіть рядок: ");
+        String str = sc.nextLine();
+
+        String[] words = str.split(" ");
+
+        String min = words[0];
+        String max = words[0];
+
+        for (String w : words) {
+            if (w.length() < min.length()) min = w;
+            if (w.length() > max.length()) max = w;
+        }
+
+        System.out.println("Найкоротше слово: " + min);
+        System.out.println("Найдовше слово: " + max);
+
+        sc.close();
+    }
+}
