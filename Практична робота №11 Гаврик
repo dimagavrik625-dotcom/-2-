@@ -1,0 +1,276 @@
+import java.util.Scanner;
+import java.util.Random;
+import java.util.InputMismatchException;
+
+public class Saper {
+    static int size = 10;
+    static int[][] pole = new int[30][30];
+    static boolean[][] otkryto = new boolean[30][30];
+    static boolean[][] flagi = new boolean[30][30];
+    static int countMines = 0;
+    static double diff = 0.15;
+    static boolean gameOver = false;
+    static boolean firstStep = true;
+
+    static String RESET = "\u001B[0m";
+    static String RED = "\u001B[31m";
+    static String GREEN = "\u001B[32m";
+    static String YELLOW = "\u001B[33m";
+    static String BLUE = "\u001B[34m";
+    static String CYAN = "\u001B[36m";
+    static String activeColor = RESET;
+
+    static Scanner sc = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        while (true) {
+            System.out.println(activeColor + "\nМЕНЮ");
+            System.out.println("1. Старт гри");
+            System.out.println("2. Налаштування");
+            System.out.println("3. Вихід" + RESET);
+
+            String vibor = sc.next();
+
+            if (vibor.equals("1")) igra();
+            else if (vibor.equals("2")) settings();
+            else if (vibor.equals("3")) break;
+        }
+    }
+
+    static void settings() {
+        while (true) {
+            System.out.println(activeColor + "\nНАЛАШТУВАННЯ");
+            System.out.println("1. Розмір поля (" + size + "x" + size + ")");
+            System.out.println("2. Складність (" + (int)(diff * 100) + "%)");
+            System.out.println("3. Колір меню");
+            System.out.println("4. Назад" + RESET);
+
+            String s = sc.next();
+
+            if (s.equals("1")) {
+                System.out.print("Розмір (5-30): ");
+                try {
+                    int newSize = sc.nextInt();
+                    if (newSize < 5 || newSize > 30) {
+                        throw new IllegalArgumentException();
+                    }
+                    size = newSize;
+                } catch (InputMismatchException e) {
+                    System.out.println(RED + "Введи число!" + RESET);
+                    sc.nextLine();
+                } catch (IllegalArgumentException e) {
+                    System.out.println(RED + "Розмір має бути 5-30!" + RESET);
+                }
+            }
+
+            else if (s.equals("2")) {
+                System.out.print("% мін: ");
+                try {
+                    int percent = sc.nextInt();
+                    if (percent < 1 || percent > 90) {
+                        throw new IllegalArgumentException();
+                    }
+                    diff = percent / 100.0;
+                } catch (InputMismatchException e) {
+                    System.out.println(RED + "Введи число!" + RESET);
+                    sc.nextLine();
+                } catch (IllegalArgumentException e) {
+                    System.out.println(RED + "1-90%!" + RESET);
+                }
+            }
+
+            else if (s.equals("3")) {
+                System.out.println("1-White, 2-Blue, 3-Green, 4-Yellow");
+                String c = sc.next();
+                if (c.equals("1")) activeColor = RESET;
+                else if (c.equals("2")) activeColor = BLUE;
+                else if (c.equals("3")) activeColor = GREEN;
+                else if (c.equals("4")) activeColor = YELLOW;
+            }
+
+            else if (s.equals("4")) break;
+        }
+    }
+
+    static void igra() {
+        gameOver = false;
+        firstStep = true;
+        countMines = (int)(size * size * diff);
+        if (countMines < 1) countMines = 1;
+
+        for (int i = 0; i < 30; i++) {
+            for (int j = 0; j < 30; j++) {
+                pole[i][j] = 0;
+                otkryto[i][j] = false;
+                flagi[i][j] = false;
+            }
+        }
+
+        while (!gameOver) {
+            risovatPole();
+            System.out.print("Команда (o/f/e x y): ");
+
+            String cmd;
+
+            try {
+                cmd = sc.next();
+                if (!cmd.equals("o") && !cmd.equals("f") && !cmd.equals("e")) {
+                    throw new IllegalArgumentException();
+                }
+            } catch (IllegalArgumentException e) {
+                System.out.println(RED + "Невідома команда!" + RESET);
+                continue;
+            }
+
+            if (cmd.equals("e")) return;
+
+            int x, y;
+
+            try {
+                x = sc.nextInt();
+                y = sc.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println(RED + "Координати мають бути числами!" + RESET);
+                sc.nextLine();
+                continue;
+            }
+
+            try {
+                if (x < 0 || x >= size || y < 0 || y >= size) {
+                    throw new IndexOutOfBoundsException();
+                }
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println(RED + "Координати поза полем!" + RESET);
+                continue;
+            }
+
+            if (cmd.equals("o")) {
+                if (firstStep) {
+                    stavimMiny(x, y);
+                    firstStep = false;
+                }
+                openCell(x, y);
+            } else if (cmd.equals("f")) {
+                flagi[y][x] = !flagi[y][x];
+            }
+
+            if (!gameOver && checkWin()) {
+                risovatPole();
+                System.out.println(GREEN + "Перемога" + RESET);
+                gameOver = true;
+            }
+        }
+    }
+
+    static void stavimMiny(int startX, int startY) {
+        Random rnd = new Random();
+        int m = 0;
+
+        while (m < countMines) {
+            int rx = rnd.nextInt(size);
+            int ry = rnd.nextInt(size);
+
+            if (Math.abs(rx - startX) <= 1 && Math.abs(ry - startY) <= 1) continue;
+
+            if (pole[ry][rx] != -1) {
+                pole[ry][rx] = -1;
+                m++;
+            }
+        }
+
+        for (int y = 0; y < size; y++) {
+            for (int x = 0; x < size; x++) {
+                if (pole[y][x] == -1) continue;
+
+                int c = 0;
+
+                for (int i = -1; i <= 1; i++) {
+                    for (int j = -1; j <= 1; j++) {
+                        int ny = y + i;
+                        int nx = x + j;
+
+                        if (ny >= 0 && ny < size && nx >= 0 && nx < size && pole[ny][nx] == -1) {
+                            c++;
+                        }
+                    }
+                }
+
+                pole[y][x] = c;
+            }
+        }
+    }
+
+    static void openCell(int x, int y) {
+        if (x < 0 || x >= size || y < 0 || y >= size || otkryto[y][x] || flagi[y][x]) return;
+
+        otkryto[y][x] = true;
+
+        if (pole[y][x] == -1) {
+            risovatPole();
+            System.out.println(RED + "Гравець підірвався на міні" + RESET);
+            gameOver = true;
+            return;
+        }
+
+        if (pole[y][x] == 0) {
+            for (int i = -1; i <= 1; i++) {
+                for (int j = -1; j <= 1; j++) {
+                    openCell(x + j, y + i);
+                }
+            }
+        }
+    }
+
+    static void risovatPole() {
+        System.out.println("\n     X ->");
+        System.out.print("     ");
+        for (int i = 0; i < size; i++) System.out.printf("%-3d", i);
+        System.out.println();
+
+        System.out.print("   +");
+        for (int i = 0; i < size; i++) System.out.print("---");
+        System.out.println("+");
+
+        for (int y = 0; y < size; y++) {
+            System.out.printf("%2d | ", y);
+
+            for (int x = 0; x < size; x++) {
+                String content = "";
+
+                if (otkryto[y][x]) {
+                    if (pole[y][x] == -1) content = RED + "*" + RESET;
+                    else if (pole[y][x] == 0) content = " ";
+                    else {
+                        String col = switch (pole[y][x]) {
+                            case 1 -> BLUE;
+                            case 2 -> GREEN;
+                            case 3 -> RED;
+                            default -> YELLOW;
+                        };
+                        content = col + pole[y][x] + RESET;
+                    }} else if (flagi[y][x]) {
+                    content = CYAN + "F" + RESET;
+                } else {
+                    content = ".";
+                }
+
+                System.out.print(content + "  ");
+            }
+
+            System.out.println("|");
+        }
+
+        System.out.print("   +");
+        for (int i = 0; i < size; i++) System.out.print("---");
+        System.out.println("+");
+    }
+
+    static boolean checkWin() {
+        for (int y = 0; y < size; y++) {
+            for (int x = 0; x < size; x++) {
+                if (pole[y][x] != -1 && !otkryto[y][x]) return false;
+            }
+        }
+        return true;
+    }
+}
