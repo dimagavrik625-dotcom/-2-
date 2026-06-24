@@ -1,0 +1,182 @@
+import java.util.Scanner;
+
+public class Main {
+
+    static String[] usernames = new String[15];
+    static String[] passwords = new String[15];
+
+    static Scanner sc = new Scanner(System.in);
+
+    public static void main(String[] args) {
+
+        while (true) {
+
+            System.out.println("\n1 - Додати користувача");
+            System.out.println("2 - Видалити користувача");
+            System.out.println("3 - Автентифікація");
+            System.out.println("4 - Вихід");
+
+            int choice = sc.nextInt();
+            sc.nextLine();
+
+            try {
+
+                switch (choice) {
+                    case 1:
+                        registerUser();
+                        break;
+
+                    case 2:
+                        deleteUser();
+                        break;
+
+                    case 3:
+                        login();
+                        break;
+
+                    case 4:
+                        return;
+
+                    default:
+                        throw new Exception("Невірний пункт меню");
+                }
+
+            } catch (Exception e) {
+                System.out.println("Помилка: " + e.getMessage());
+            }
+        }
+    }
+
+    static void registerUser() throws Exception {
+
+        int freeIndex = -1;
+
+        for (int i = 0; i < usernames.length; i++) {
+            if (usernames[i] == null) {
+                freeIndex = i;
+                break;
+            }
+        }
+
+        if (freeIndex == -1) {
+            throw new Exception("Досягнуто максимум користувачів");
+        }
+
+        System.out.print("Ім'я: ");
+        String username = sc.nextLine();
+
+        validateUsername(username);
+
+        System.out.print("Пароль: ");
+        String password = sc.nextLine();
+
+        validatePassword(password);
+
+        usernames[freeIndex] = username;
+        passwords[freeIndex] = password;
+
+        System.out.println("Користувача додано");
+    }
+
+    static void deleteUser() throws Exception {
+
+        System.out.print("Ім'я користувача: ");
+        String username = sc.nextLine();
+
+        for (int i = 0; i < usernames.length; i++) {
+
+            if (username.equals(usernames[i])) {
+
+                usernames[i] = null;
+                passwords[i] = null;
+
+                System.out.println("Користувача видалено");
+                return;
+            }
+        }
+
+        throw new Exception("Користувача не знайдено");
+    }
+
+    static void login() throws Exception {
+
+        System.out.print("Ім'я: ");
+        String username = sc.nextLine();
+
+        System.out.print("Пароль: ");
+        String password = sc.nextLine();
+
+        for (int i = 0; i < usernames.length; i++) {
+
+            if (username.equals(usernames[i]) &&
+                    password.equals(passwords[i])) {
+
+                System.out.println("Користувача успішно автентифіковано");
+                return;
+            }
+        }
+
+        throw new Exception("Невірне ім'я або пароль");
+    }
+
+    static void validateUsername(String username) throws Exception {
+
+        if (username.length() < 5) {
+            throw new Exception("Ім'я має містити мінімум 5 символів");
+        }
+
+        for (int i = 0; i < username.length(); i++) {
+
+            if (username.charAt(i) == ' ') {
+                throw new Exception("Ім'я не може містити пробілів");
+            }
+        }
+    }
+
+    static void validatePassword(String password) throws Exception {
+
+        if (password.length() < 10) {
+            throw new Exception("Пароль закороткий");
+        }
+
+        if (password.contains("admin")
+                || password.contains("pass")
+                || password.contains("password")
+                || password.contains("qwerty")
+                || password.contains("ytrewq")) {
+
+            throw new Exception("Заборонене слово у паролі");
+        }
+
+        int digits = 0;
+        int specials = 0;
+
+        for (int i = 0; i < password.length(); i++) {
+
+            char c = password.charAt(i);
+
+            if (c == ' ') {
+                throw new Exception("Пароль не може містити пробілів");}
+
+            if (Character.isDigit(c)) {
+                digits++;
+            }
+
+            if (!Character.isLetterOrDigit(c)) {
+                specials++;
+            }
+
+            if (c > 127) {
+                throw new Exception("Лише латинські символи");
+            }
+        }
+
+        if (digits < 3) {
+            throw new Exception("Має бути мінімум 3 цифри");
+        }
+
+        if (specials < 1) {
+            throw new Exception("Має бути мінімум 1 спецсимвол");
+        }
+    }
+}
