@@ -1,0 +1,84 @@
+import java.io.*;
+import java.util.Scanner;
+
+public class TextEditor {
+
+    static final String FILE_NAME = "text.txt";
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+
+        do {
+            showMenu();
+
+            try {
+                choice = Integer.parseInt(scanner.nextLine());
+
+                switch (choice) {
+                    case 1:
+                        writeToFile(scanner);
+                        break;
+                    case 2:
+                        readFile();
+                        break;
+                    case 3:
+                        System.out.println("Завершення роботи.");
+                        break;
+                    default:
+                        System.out.println("Невірний вибір.");
+                }
+
+            } catch (NumberFormatException e) {
+                System.out.println("Введіть число.");
+                choice = 0;
+            }
+
+        } while (choice != 3);
+
+        scanner.close();
+    }
+
+    public static void showMenu() {
+        System.out.println("\n===== МЕНЮ =====");
+        System.out.println("1 - Записати до файлу");
+        System.out.println("2 - Прочитати файл");
+        System.out.println("3 - Вийти");
+        System.out.print("Ваш вибір: ");
+    }
+
+    public static void writeToFile(Scanner scanner) {
+        System.out.print("Введіть рядок: ");
+
+        String text = scanner.nextLine();
+
+        try {
+            FileWriter writer = new FileWriter(FILE_NAME, true);
+            writer.write(text + "\n");
+            writer.close();
+
+            System.out.println("Рядок успішно записано.");
+        } catch (IOException e) {
+            System.out.println("Помилка запису у файл.");
+        }
+    }
+
+    public static void readFile() {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME));
+
+            String line;
+
+            System.out.println("\nВміст файлу:");
+
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+
+            reader.close();
+
+        } catch (IOException e) {
+            System.out.println("Помилка читання файлу.");
+        }
+    }
+}
