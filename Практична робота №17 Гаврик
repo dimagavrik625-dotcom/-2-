@@ -1,0 +1,95 @@
+#include <iostream>
+#include <cmath>
+#include <ctime>
+#include <cstdlib>
+
+using namespace std;
+
+// структура точки
+struct Point {
+    double x;
+    double y;
+};
+
+// функція для відстані між двома точками
+double distance(Point a, Point b) {
+    return sqrt((a.x - b.x) * (a.x - b.x) +
+                (a.y - b.y) * (a.y - b.y));
+}
+
+// функція обчислення площі
+double rectangleArea(Point* p, int size) {
+    if (size != 4) {
+        cout << "Потрібно рівно 4 точки!\n";
+        return 0;
+    }
+
+    double a = distance(p[0], p[1]);
+    double b = distance(p[1], p[2]);
+
+    return a * b;
+}
+
+// перевірка чи це прямокутник (простенька)
+bool isRectangle(Point* p) {
+    double d1 = distance(p[0], p[1]);
+    double d2 = distance(p[1], p[2]);
+    double d3 = distance(p[2], p[3]);
+    double d4 = distance(p[3], p[0]);
+
+    return (fabs(d1 - d3) < 1e-6) && (fabs(d2 - d4) < 1e-6);
+}
+
+// ручне введення
+void inputPoints(Point* p) {
+    for (int i = 0; i < 4; i++) {
+        cout << "Введи координати точки " << i + 1 << " (x y): ";
+        cin >> p[i].x >> p[i].y;
+    }
+}
+
+// генерація випадкових точок
+void generatePoints(Point* p) {
+    srand(time(0));
+
+    for (int i = 0; i < 4; i++) {
+        p[i].x = rand() % 10;
+        p[i].y = rand() % 10;
+    }
+
+    cout << "Згенеровані точки:\n";
+    for (int i = 0; i < 4; i++) {
+        cout << "(" << p[i].x << ", " << p[i].y << ")\n";
+    }
+}
+
+int main() {
+    int choice;
+
+    cout << "Оберіть спосіб введення координат:\n";
+    cout << "1 - вручну\n";
+    cout << "2 - випадково\n";
+    cin >> choice;
+
+    Point* rect = new Point[4];
+
+    if (choice == 1) {
+        inputPoints(rect);
+    } else if (choice == 2) {
+        generatePoints(rect);
+    } else {
+        cout << "Невірний вибір!\n";
+        delete[] rect;
+        return 0;
+    }
+
+    if (!isRectangle(rect)) {
+        cout << "Це НЕ прямокутник!\n";
+    } else {
+        double area = rectangleArea(rect, 4);
+        cout << "Площа прямокутника: " << area << endl;
+    }
+
+    delete[] rect;
+    return 0;
+}
