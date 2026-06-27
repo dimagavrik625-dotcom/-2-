@@ -1,0 +1,117 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+// ===== ФУНКЦІЇ =====
+
+void avgEvenOdd(int* arr, int size) {
+    int* p = arr;
+    int evenSum = 0, oddSum = 0;
+    int evenCount = 0, oddCount = 0;
+
+    for (int i = 0; i < size; i++, p++) {
+        if (*p % 2 == 0) {
+            evenSum += *p;
+            evenCount++;
+        } else {
+            oddSum += *p;
+            oddCount++;
+        }
+    }
+
+    if (evenCount)
+        cout << "Середнє парних: " << (double)evenSum / evenCount << endl;
+    else
+        cout << "Немає парних\n";
+
+    if (oddCount)
+        cout << "Середнє непарних: " << (double)oddSum / oddCount << endl;
+    else
+        cout << "Немає непарних\n";
+}
+
+void findStrings(string* arr, int size) {
+    string* p = arr;
+
+    string shortest = *p;
+    string longest = *p;
+
+    for (int i = 1; i < size; i++) {
+        p++;
+        if (p->length() < shortest.length()) shortest = *p;
+        if (p->length() > longest.length()) longest = *p;
+    }
+
+    cout << "Найкоротший рядок: " << shortest << " (" << shortest.length() << ")\n";
+    cout << "Найдовший рядок: " << longest << " (" << longest.length() << ")\n";
+}
+
+void sumReverse(float* arr, int size) {
+    float sum = 0;
+    float* p = arr + size - 1;
+
+    for (int i = 0; i < size; i++, p--) {
+        sum += *p;
+    }
+
+    cout << "Сума елементів: " << sum << endl;
+}
+
+// ===== МЕНЮ =====
+
+int main() {
+    int choice;
+
+    do {
+        cout << "\n===== МЕНЮ =====\n";
+        cout << "1 - Середнє парних/непарних\n";
+        cout << "2 - Рядки (довгий/короткий)\n";
+        cout << "3 - Сума float (у зворотному порядку)\n";
+        cout << "0 - Вихід\n";
+        cout << "Ваш вибір: ";
+        cin >> choice;
+
+        if (choice == 1) {
+            int n;
+            cout << "Розмір масиву: ";
+            cin >> n;
+            int* arr = new int[n];
+
+            cout << "Введіть елементи:\n";
+            for (int i = 0; i < n; i++) cin >> arr[i];
+
+            avgEvenOdd(arr, n);
+            delete[] arr;
+        }
+
+        else if (choice == 2) {
+            int n;
+            cout << "Кількість рядків: ";
+            cin >> n;
+            string* arr = new string[n];
+
+            cout << "Введіть рядки:\n";
+            for (int i = 0; i < n; i++) cin >> arr[i];
+
+            findStrings(arr, n);
+            delete[] arr;
+        }
+
+        else if (choice == 3) {
+            int n;
+            cout << "Розмір масиву: ";
+            cin >> n;
+            float* arr = new float[n];
+
+            cout << "Введіть елементи:\n";
+            for (int i = 0; i < n; i++) cin >> arr[i];
+
+            sumReverse(arr, n);
+            delete[] arr;
+        }
+
+    } while (choice != 0);
+
+    return 0;
+}
