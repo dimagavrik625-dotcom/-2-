@@ -1,0 +1,111 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+// 1. Среднее четных и нечетных
+void avgEvenOdd(int* arr, int size) {
+    int* p = arr;
+    int evenSum = 0, oddSum = 0;
+    int evenCount = 0, oddCount = 0;
+
+    for (int i = 0; i < size; i++, p++) {
+        if (*p % 2 == 0) {
+            evenSum += *p;
+            evenCount++;
+        } else {
+            oddSum += *p;
+            oddCount++;
+        }
+    }
+
+    if (evenCount > 0)
+        cout << "Среднее четных: " << (double)evenSum / evenCount << endl;
+    else
+        cout << "Нет четных чисел\n";
+
+    if (oddCount > 0)
+        cout << "Среднее нечетных: " << (double)oddSum / oddCount << endl;
+    else
+        cout << "Нет нечетных чисел\n";
+}
+
+// 2. Самая длинная и короткая строка
+void findStrings(string* arr, int size) {
+    string* p = arr;
+
+    string shortest = *p;
+    string longest = *p;
+
+    for (int i = 1; i < size; i++) {
+        p++;
+
+        if (p->length() < shortest.length())
+            shortest = *p;
+
+        if (p->length() > longest.length())
+            longest = *p;
+    }
+
+    cout << "Короткая строка: " << shortest << " (длина: " << shortest.length() << ")\n";
+    cout << "Длинная строка: " << longest << " (длина: " << longest.length() << ")\n";
+}
+
+// 3. Сумма float (в обратном порядке)
+void sumReverse(float* arr, int size) {
+    float sum = 0;
+    float* p = arr + size - 1;
+
+    for (int i = 0; i < size; i++, p--) {
+        sum += *p;
+    }
+
+    cout << "Сумма элементов: " << sum << endl;
+}
+
+int main() {
+    int n;
+
+    // ===== 1 =====
+    cout << "Введите размер массива int: ";
+    cin >> n;
+    int* arr1 = new int[n];
+
+    cout << "Введите элементы:\n";
+    for (int i = 0; i < n; i++) {
+        cin >> arr1[i];
+    }
+
+    avgEvenOdd(arr1, n);
+
+    // ===== 2 =====
+    cout << "\nВведите количество строк: ";
+    cin >> n;
+    string* arr2 = new string[n];
+
+    cout << "Введите строки:\n";
+    for (int i = 0; i < n; i++) {
+        cin >> arr2[i];
+    }
+
+    findStrings(arr2, n);
+
+    // ===== 3 =====
+    cout << "\nВведите размер массива float: ";
+    cin >> n;
+    float* arr3 = new float[n];
+
+    cout << "Введите элементы:\n";
+    for (int i = 0; i < n; i++) {
+        cin >> arr3[i];
+    }
+
+    sumReverse(arr3, n);
+
+    // очистка памяти
+    delete[] arr1;
+    delete[] arr2;
+    delete[] arr3;
+
+    return 0;
+}
